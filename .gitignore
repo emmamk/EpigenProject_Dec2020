@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+Sarah_HIIT
+idat
+*_RAW.tar
+.DS_Store
