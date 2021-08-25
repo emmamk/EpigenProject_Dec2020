@@ -1,0 +1,16 @@
+[Header],,,,,,
+Investigator Name,Scientist,,,,,
+Project Name,DNA Methylation EPIC,,,,,
+Experiment Name,Test,,,,,
+Date,1-Apr-16,,,,,
+,,,,,,
+[Data],,,,,,
+Sample_Name,Sample_Well,Sample_Plate,Sample_Group,Pool_ID,Sentrix_ID,Sentrix_Position
+Sample_1,A01,Test_Plate,,,2.00514E+11,R01C01
+Sample_2,B01,Test_Plate,,,2.00514E+11,R02C01
+Sample_3,C01,Test_Plate,,,2.00514E+11,R03C01
+Sample_4,D01,Test_Plate,,,2.00514E+11,R04C01
+Sample_5,E01,Test_Plate,,,2.00514E+11,R05C01
+Sample_6,F01,Test_Plate,,,2.00514E+11,R06C01
+Sample_7,G01,Test_Plate,,,2.00514E+11,R07C01
+Sample_8,H01,Test_Plate,,,2.00514E+11,R08C01
