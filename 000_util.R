@@ -1,7 +1,8 @@
 #### Util variables ####
-setwd("/Users/Emma/Documents/Bioinformatics/Epigenetics/")
+setwd("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/")
 gseid <- c("GSE60655", "GSE114763")
 gsedir <- c("GSE60655_End", "GSE114763_Res")
+dataDir <- ("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/DataDir/")
 
 #### Libraries ####
 suppressMessages({

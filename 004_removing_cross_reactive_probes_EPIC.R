@@ -4,6 +4,9 @@
 # Pidsley et al. 2016: EPIC
 # https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1066-1#Sec22
 
+# source("000_util.R")
+# source("003_quality_control.R")
+
 #. Obtaining Reference Files for EPIC ----
 # https://bioc.ism.ac.jp/packages/devel/bioc/vignettes/ramwas/inst/doc/RW5a_matrix.html#probes-with-snps-and-in-cross-reactive-regions
 if (!file.exists("DataDir")) {

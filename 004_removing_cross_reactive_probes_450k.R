@@ -3,7 +3,7 @@
 # Chen et al. 2013: 450k
 # https://www.tandfonline.com/doi/full/10.4161/epi.23470
 
-source("000_util.R")
+# source("000_util.R")
 # source("003_quality_control.R")
 
 #. Obtaining Reference Files for 450k ----
@@ -28,7 +28,7 @@ if (!file.exists("DataDir/i450k_ns.xlsx")) {
 
 #. Ref Files ----
 # library(readxl)
-dataDir <- ("/Users/Emma/Documents/Bioinformatics/Epigenetics/DataDir/")
+# dataDir <- ("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/DataDir/")
 ex1  =  read_excel(paste(dataDir, "i450k_ns.xlsx", sep = "/"), sheet  =  1)
 ex2  =  read_excel(paste(dataDir, "i450k_pl.xlsx", sep = "/"), sheet  =  1)
 ex3  =  read_excel(paste(dataDir, "i450k_pl.xlsx", sep = "/"), sheet  =  2)
