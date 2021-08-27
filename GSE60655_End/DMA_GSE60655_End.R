@@ -2,8 +2,8 @@
 # Endurance exercise: Before, After
 # 参照URL: https://kasperdanielhansen.github.io/genbioconductor/html/minfi.html
 # set up a path to the data directory
-# setwd('/Users/Emma/Documents/Bioinformatics/Epigenetics/GSE60655_End')
-dataDir <- ('/Users/Emma/Documents/Bioinformatics/Epigenetics/DataDir/')
+# setwd('/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/GSE60655_End')
+dataDir <- ('/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/DataDir/')
 
 ##### Obtaining the Data #####
 library(GEOquery)

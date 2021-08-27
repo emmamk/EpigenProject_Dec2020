@@ -1,8 +1,8 @@
 #### EPIC DMA ####
 # Resistance exercise: Base, Right After, 7wLoading, 7wUnloading, Reloading
 # 参照URL: https://kasperdanielhansen.github.io/genbioconductor/html/minfi.html
-# setwd('/Users/Emma/Documents/Bioinformatics/Epigenetics/')
-dataDir <- ('/Users/Emma/Documents/Bioinformatics/Epigenetics/DataDir/')
+# setwd('/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/')
+dataDir <- ('/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/DataDir/')
 
 ##### Obtaining the Data #####
 library(GEOquery)
@@ -373,7 +373,7 @@ resOrdered_P005BaUn <- resSig_P005BaUn[order(resSig_P005BaUn$P.Value),]
 resOrdered_P005UnRe <- resSig_P005UnRe[order(resSig_P005UnRe$P.Value),]
 head(select(resOrdered_P005, P.Value))
 
-write.table( resOrdered_P005BaUn, file="DMPs_Res_P005BaUn.csv", sep=",", row.names=FALSE)
+write.table(resOrdered_P005BaUn, file="DMPs_Res_P005BaUn.csv", sep=",", row.names=FALSE)
 write.table(resOrdered_P005UnRe, file="DMPs_Res_P005UnRe.csv", sep=",", row.names=FALSE)
 # 数百MB, 開けるのに時間かかる.
 nrow(resOrdered_P005BaUn)
