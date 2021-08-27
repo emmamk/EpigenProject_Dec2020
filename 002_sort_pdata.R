@@ -26,10 +26,10 @@ pD.GSE60655$ID <- paste(pD.GSE60655$sample, pD.GSE60655$timepoint, sep=".")
 # removing female samples ----
 pD.GSE60655 <- pD.GSE60655 %>% 
     subset(gender == "male")
-with(pD.GSE60655, table(gender, timepoint))
+cat("#### GSE60655 ####", "\n")
+print(with(pD.GSE60655, table(gender, timepoint))); cat("\n\n")
 #       after before
 # male     8      8
-
 
 head(pD.GSE60655, 3)
 # DataFrame with 3 rows and 6 columns
@@ -70,7 +70,8 @@ pD.GSE114763$rep <- str_extract(pD.GSE114763$rep, pattern="rep.")
 # selecting baseline and unloading for timepoint ----
 pD.GSE114763 <- pD.GSE114763 %>% 
     subset(timepoint_org %in% c("baseline", "loading"))
-with(pD.GSE114763, table(sample, timepoint_org))
+cat("#### GSE114763 ####", "\n")
+print(with(pD.GSE114763, table(sample, timepoint_org))); cat("\n\n")
 # timepoint
 # sample baseline loading
 # S1        2         1      # S1 duplicated
@@ -86,15 +87,15 @@ with(pD.GSE114763, table(sample, timepoint_org))
 pD.GSE114763$timepoint <- ifelse(str_detect(pD.GSE114763$timepoint_org, "baseline"), "before", "after")
 pD.GSE114763$ID <- paste(pD.GSE114763$sample, pD.GSE114763$timepoint, sep=".")
 
-table(pD.GSE114763$rep)
+print(table(pD.GSE114763$rep))
 # rep1 rep2 
 # 16    1 
 
-table(pD.GSE114763$sample)
+print(table(pD.GSE114763$sample))
 # S1 S2 S3 S4 S5 S6 S7 S8 
 # 3  2  2  2  2  2  2  2
 
-table(pD.GSE114763$timepoint)
+print(table(pD.GSE114763$timepoint)); cat("\n")
 # after before
 #     8      9
 
@@ -152,11 +153,11 @@ names(pD) <- c("GSE60655", "GSE114763"); pD
 # GSM3149897        rep1       loading    GSM3149897          S8       after    S8.after
 # GSM3149899        rep2      baseline    GSM3149899          S1      before   S1.before
 
-names(pD)  # "GSE60655"  "GSE114763"
+cat("names(pD):", names(pD), "\n\n")  # "GSE60655"  "GSE114763"
 
 
 
-#### removing duplicated replication ####
+#### removing replications ####
 for (i in seq_along(pD)) {
     cat("####", names(pD)[i], "####", "\n")
     pdata <- pD[[i]]
@@ -166,8 +167,8 @@ for (i in seq_along(pD)) {
     pdata <- pdata[keep,]
     rgset <- rgset[,keep]
     cat("table(pdata$rep):", table(pdata$rep), "\n")
-    cat("dim(pD):", dim(pdata), "\n")  # 34  7
-    cat("dim(rgSet):", dim(rgset), "\n\n")  # 622399     34
+    cat("dim(pD):", dim(pdata), "\n")
+    cat("dim(rgSet):", dim(rgset), "\n\n")
     
     sampleNames(rgset) <- rownames(pdata) <- pdata$ID
     pdata <- pdata[sampleNames(rgset),]

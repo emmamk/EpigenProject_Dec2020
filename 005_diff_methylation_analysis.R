@@ -144,40 +144,40 @@ for (i in seq_along(mVals)) {
 # 
 # p < 0.05: 
 # before - after
-# Down            20168
-# NotSig         427201
-# Up              19875
+# Down            16459
+# NotSig         352598
+# Up              16163
 # 
 # p < 0.01: 
-#     before - after
-# Down             3593
-# NotSig         459570
-# Up               4081
+# before - after
+# Down             2911
+# NotSig         379033
+# Up               3276
 
 #### GSE114763_Res (Base vs Loading) ####
 # FDR < 0.2: 
 # before - after
 # Down                0
-# NotSig         776698
+# NotSig         777574
 # Up                  0
 # 
 # FDR < 0.05 
 # before - after
 # Down                0
-# NotSig         776698
+# NotSig         777574
 # Up                  0
 # 
 # p < 0.05: 
 # before - after
-# Down            21311
-# NotSig         787777
-# Up              21640
+# Down            19709
+# NotSig         737501
+# Up              20364
 # 
 # p < 0.01: 
 # before - after
-# Down             3561
-# NotSig         823252
-# Up               3915
+# Down             3297
+# NotSig         770604
+# Up               3673
 
 
 
@@ -251,9 +251,9 @@ for (i in seq_along(DMPs)) {
     resultsSig[[i+4]] <- res_p01 <- subset(dmps, P.Value < 0.01)
     names(resultsSig)[c(i, i+2, i+4)] <- paste0(rep(paste0("res", gseid[i]), 3), c("adj02", "p005", "p001"))
 
-    write.table(dmps, file = paste0("res.all.0825.", gseid[i], ".csv"), sep = ",", row.names = FALSE)
-    write.table(res_p05, file = paste0("res.p05.0825.", gseid[i], ".csv"), sep = ",", row.names = FALSE)
-    write.table(res_p01, file = paste0("res.p01.0825.", gseid[i], ".csv"), sep = ",", row.names = FALSE)
+    # write.table(dmps, file = paste0("res.all.0825.", gseid[i], ".csv"), sep = ",", row.names = FALSE)
+    # write.table(res_p05, file = paste0("res.p05.0825.", gseid[i], ".csv"), sep = ",", row.names = FALSE)
+    # write.table(res_p01, file = paste0("res.p01.0825.", gseid[i], ".csv"), sep = ",", row.names = FALSE)
     }
 
 # memo:

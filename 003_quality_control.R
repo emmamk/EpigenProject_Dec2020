@@ -72,9 +72,8 @@ names(detP)  # "GSE60655"  "GSE114763"
 # original study removes SkM_Epi_Mem_1 (baseline, sample1) == GSM3149860: outlier
 names(rgSet)  # "GSE60655_End"  "GSE114763_Res"
 id <- "GSE114763"
-id2 <- "GSE114763_Res"
 keep <- pD[[id]]$geo_accession != "GSM3149860"
-rgSet[[id2]] <- rgSet[[id2]][,keep]; dim(rgSet[[id2]])  # 1051943      15
+rgSet[[id]] <- rgSet[[id]][,keep]; dim(rgSet[id])  # 1051943      15
 pD[[id]] <- pD[[id]][keep,]; dim(pD[[id]])  # 15  6
 
 # removing above from detection p-value table ----
@@ -85,7 +84,7 @@ detP[[id]] <- detP[[id]][,keep]; dim(detP[[id]])  # 866238     15
 
 #### Remove Poor Quality Samples ####
 for (i in seq_along(detP)) {
-    cat(gsedir[i], "\n")
+    cat("####", gsedir[i], "####", "\n")
     cat("max(colMeans(detP):", max(colMeans(detP[[i]])), "\n")
     keep <- colMeans(detP[[i]]) < 0.05
     cat("samples to be kept (table(keep)):", table(keep), "\n")
@@ -120,12 +119,13 @@ for (i in seq_along(detP)) {
 
 
 
-#### Normalisation ####
+#### Normalization ####
 # normalize the data; this results in a GenomicRatioSet object
 # choose optimal normalization method suitable for the data
 # ("Warning messages:" regarding "only one sex is present..." can be ignored.)
 mSetSq <- list()
 mSetRaw <- list()
+cat("#### Normalization ####", "\n")
 for (i in seq_along(rgSet)) {
     cat("####", gsedir[i], "####", "\n")
     #. normalizing ----
@@ -156,6 +156,7 @@ for (i in seq_along(rgSet)) {
 #### Data exploration ####
 #### MDS plot ####
 # Multi-dimensional scaling (MDS) plots: to look at largest sources of variation
+cat("#### Writing MDS plots ####", "\n")
 for (i in seq_along(mSetSq)) {
     cat(gseid[i], "\n")
     png(paste0("plot0826/mds_", gseid[i], ".png"))
@@ -182,7 +183,7 @@ for (i in seq_along(mSetSq)) {
             col = pal[factor(pD[[i]]$timepoint)], dim = c(3,4), cex = 1.2)
     dev.off()
     }
-
+cat("done", "\n\n")
 
 
 #### Filtering ####
@@ -191,8 +192,9 @@ for (i in seq_along(mSetSq)) {
 # prior to differential methylation analysis.
 # i.e. fewer statistical tests
 mSetSqFlt <- list()
+cat("#### Filtering probes by quality ####", "\n")
 for (i in seq_along(detP)) {
-    cat(gseid[i], "\n")
+    cat("####", gsedir[i], "####", "\n")
     gse <- gseid[i]
     # ensure probes are in the same order in the mSetSq and detP objects
     detP[[gse]] <- detP[[i]][match(featureNames(mSetSq[[i]]), rownames(detP[[i]])),]
@@ -232,6 +234,7 @@ source("004_removing_cross_reactive_probes_EPIC.R"); dim(mSetSqFlt[["GSE114763"]
 #### Re-examine Data with MDS Plots ####
 # Once the data has been filtered and normalised, it is often useful to re-examine
 # the MDS plots to see if the relationship between the samples has changed
+cat("#### Re-examining MDS Plots after Filtering ####", "\n")
 for (i in seq_along(mSetSqFlt)) {
     cat(gseid[i], "\n")
     
