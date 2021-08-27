@@ -43,11 +43,12 @@ xReactiveProbes = unique(c(
              snpcpgs6$MAPINFO - snpcpgs6$VARIANT_END) < 10]))
 
 # mSetSqFlt[[2]] == GSE114763, EPIC
-keep <- !(featureNames(mSetSqFlt[[2]]) %in% xReactiveProbes)
+id <- "GSE114763"
+keep <- !(featureNames(mSetSqFlt[[id]]) %in% xReactiveProbes)
 table(keep)
 # TRUE 
 # 776698
-mSetSqFlt[[2]] <- mSetSqFlt[[2]][keep,] 
-mSetSqFlt[[2]]
+mSetSqFlt[[id]] <- mSetSqFlt[[id]][keep,] 
+mSetSqFlt[[id]]
 
 rm(snpcpgs1, snpcpgs4, snpcpgs5, snpcpgs6)

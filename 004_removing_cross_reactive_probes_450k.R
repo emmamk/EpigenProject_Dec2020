@@ -39,10 +39,11 @@ exclude.snp  =  unique(c(
     ex3$PROBE[ (ex3$BASE_FROM_SBE < 10) & (ex3$AF > 0.01)]))
 
 # mSetSqFlt[[1]] == GSE60655, 450k
-keep <- !(featureNames(mSetSqFlt[[1]]) %in% exclude.snp)
+id <- "GSE60655"
+keep <- !(featureNames(mSetSqFlt[[id]]) %in% exclude.snp)
 table(keep)
 # FALSE   TRUE 
 # 82024 385220
-mSetSqFlt[[1]] <- mSetSqFlt[[1]][keep,] 
-dim(mSetSqFlt[[1]])  # 385220     14
+mSetSqFlt[[id]] <- mSetSqFlt[[id]][keep,] 
+dim(mSetSqFlt[[id]])  # 385220     14
 rm(host, files, i, ex1, ex2, ex3)

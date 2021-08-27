@@ -7,17 +7,18 @@
 #### Detecting p-values ####
 detP <- list()
 pal <- brewer.pal(8,"Dark2")
-if (!dir.exists("plot")) {
-    dir.create("plot")
+if (!dir.exists("plot0826")) {
+    dir.create("plot0826")
 }
 
-png("plot/detectionp.png", width = 1280, height = 800)
+png("plot0826/detectionp.png", width = 1280, height = 800)
 par(mfrow = c(1,2))
 for (i in seq_along(rgSet)) {
-    cat(gseid[i], "\n")
+    cat("####", gsedir[i], "####", "\n")
+    gse <- gseid[i]
     pdata <- pData(rgSet[[i]])
-    detP[[i]] <- detectionP(rgSet[[i]])
-    detection_p <- detP[[i]]
+    detP[[gse]] <- detectionP(rgSet[[i]])
+    detection_p <- detP[[gse]]
     
     cat("max(colMeans(detection_p)):", max(colMeans(detection_p)), "\n")  # 0.002766066
     cat("detP[1:3,1:5]:", "\n")
@@ -32,9 +33,10 @@ for (i in seq_along(rgSet)) {
     legend("topleft", legend = levels(factor(pdata$timepoint)), fill = pal, bg = "white", bty = "n") # cex = 0.5
     }
 dev.off()
+names(detP)  # "GSE60655"  "GSE114763"
 
 # memo ----
-# GSE60655 
+#### GSE60655_End ####
 # max(colMeans(detection_p)): 0.0003285641 
 # detP[1:3,1:5]: 
 # S1.before      S1.after    S4.before      S4.after    S5.before
@@ -43,10 +45,10 @@ dev.off()
 # cg00213748 3.333207e-103 2.922029e-120 3.99785e-104 3.585549e-146 2.210492e-85
 # 
 # 
-# GSE114763 
+#### GSE114763_Res #### 
 # max(colMeans(detection_p)): 0.0007908372 
 # detP[1:3,1:5]: 
-# S1.before     S1.after S2.before S2.after     S3.before
+#            S1.before     S1.after S2.before S2.after     S3.before
 # cg18478105         0  0.00000e+00         0        0  0.000000e+00
 # cg09835024         0 7.22592e-279         0        0 6.368765e-263
 # cg14361672         0  0.00000e+00         0        0  0.000000e+00
@@ -61,13 +63,29 @@ dev.off()
 #     name <- gseid[i]
 #     pdata <- pData(rgSet[[i]])
 #     qcReport(rgSet[[i]], sampNames = pdata$ID, sampGroups = pdata$timepoint, 
-#              pdf = paste0("plot/qcReport_", name, ".pdf"))
+#              pdf = paste0("plot0826/qcReport_", name, ".pdf"))
 #     dev.off()
 #     }
 
+
+#### Removing an outlier from GSE114763 ####
+# original study removes SkM_Epi_Mem_1 (baseline, sample1) == GSM3149860: outlier
+names(rgSet)  # "GSE60655_End"  "GSE114763_Res"
+id <- "GSE114763"
+id2 <- "GSE114763_Res"
+keep <- pD[[id]]$geo_accession != "GSM3149860"
+rgSet[[id2]] <- rgSet[[id2]][,keep]; dim(rgSet[[id2]])  # 1051943      15
+pD[[id]] <- pD[[id]][keep,]; dim(pD[[id]])  # 15  6
+
+# removing above from detection p-value table ----
+names(detP)  # "GSE60655"  "GSE114763"
+detP[[id]] <- detP[[id]][,keep]; dim(detP[[id]])  # 866238     15
+
+
+
 #### Remove Poor Quality Samples ####
 for (i in seq_along(detP)) {
-    cat(gseid[i], "\n")
+    cat(gsedir[i], "\n")
     cat("max(colMeans(detP):", max(colMeans(detP[[i]])), "\n")
     keep <- colMeans(detP[[i]]) < 0.05
     cat("samples to be kept (table(keep)):", table(keep), "\n")
@@ -86,19 +104,19 @@ for (i in seq_along(detP)) {
 }
 
 # memo: 
-# GSE60655 
+# GSE60655_End
 # max(colMeans(detP): 0.0003285641 
 # samples to be kept (table(keep)): 14 
 # dim(rgSet): 622399 14 
 # dim(pD): 14 6 
 # dim(detP): 485512 14 
 #     
-# GSE114763 
-# max(colMeans(detP): 0.0007908372 
-# samples to be kept (table(keep)): 16 
-# dim(rgSet): 1051943 16 
-# dim(pD): 16 6 
-# dim(detP): 866238 16
+# GSE114763_Res 
+# max(colMeans(detP): 0.0007907984 
+# samples to be kept (table(keep)): 15 
+# dim(rgSet): 1051943 15 
+# dim(pD): 15 6 
+# dim(detP): 865859 15 
 
 
 
@@ -109,14 +127,15 @@ for (i in seq_along(detP)) {
 mSetSq <- list()
 mSetRaw <- list()
 for (i in seq_along(rgSet)) {
-    cat(gseid[i], "\n")
+    cat("####", gsedir[i], "####", "\n")
     #. normalizing ----
-    mSetSq[[i]] <- preprocessQuantile(rgSet[[i]])
+    gse <- gseid[i]
+    mSetSq[[gse]] <- preprocessQuantile(rgSet[[i]])
     # create a MethylSet object from the raw data for later plotting
-    mSetRaw[[i]] <- preprocessRaw(rgSet[[i]])
+    mSetRaw[[gse]] <- preprocessRaw(rgSet[[i]])
     
     #. densityplot: Before & After Normalisation ----
-    png(paste0("plot/densityplot_", gseid[i], ".png"), width = 1280, height = 800)
+    png(paste0("plot0826/densityplot_", gseid[i], ".png"), width = 1280, height = 800)
     par(mfrow = c(1,2))
     pdata <- pD[[i]]
     # Before
@@ -139,9 +158,8 @@ for (i in seq_along(rgSet)) {
 # Multi-dimensional scaling (MDS) plots: to look at largest sources of variation
 for (i in seq_along(mSetSq)) {
     cat(gseid[i], "\n")
-    png(paste0("plot/mds_", gseid[i], ".png"))
-    plotMDS(getM(mSetSq[[i]]), top = 1000, gene.selection = "common", 
-            col = pal[factor(pD[[i]]$timepoint)])
+    png(paste0("plot0826/mds_", gseid[i], ".png"))
+    plotMDS(getM(mSetSq[[i]]), top = 1000, gene.selection = "common", col = pal[factor(pD[[i]]$timepoint)])
     legend("topleft", legend = levels(factor(pD[[i]]$timepoint)), text.col = pal,
            fill = pal, bg = "white", cex = 0.8, bty = "n")
     dev.off()
@@ -152,7 +170,7 @@ for (i in seq_along(mSetSq)) {
     #      fill = pal, bg = "white", cex = 0.5, bty = "n")
     
     #. . Examine Higher dimensions ----
-    png(paste0("plot/mds2_", gseid[i], ".png"), width = 800)
+    png(paste0("plot0826/mds2_", gseid[i], ".png"), width = 800)
     par(mfrow = c(1,3))
     plotMDS(getM(mSetSq[[i]]), top = 1000, gene.selection = "common", 
             col = pal[factor(pD[[i]]$timepoint)], dim = c(1,3), cex = 1.2)
@@ -175,20 +193,21 @@ for (i in seq_along(mSetSq)) {
 mSetSqFlt <- list()
 for (i in seq_along(detP)) {
     cat(gseid[i], "\n")
+    gse <- gseid[i]
     # ensure probes are in the same order in the mSetSq and detP objects
-    detP[[i]] <- detP[[i]][match(featureNames(mSetSq[[i]]), rownames(detP[[i]])),]
+    detP[[gse]] <- detP[[i]][match(featureNames(mSetSq[[i]]), rownames(detP[[i]])),]
     
     # remove any probes that have failed in one or more samples
     # ex.detPのcolに1つNAがあるとrowSums(detP)は9、一方ncol(mSetSq)は常に10.
     # そのように左右の数が合わない物を除外する.
     keep <- rowSums(detP[[i]] < 0.01) == ncol(mSetSq[[i]])
     cat("probes to be kept (table(keep)):", table(keep), "\n")
-    mSetSqFlt[[i]] <- mSetSq[[i]][keep,]
+    mSetSqFlt[[gse]] <- mSetSq[[i]][keep,]
     cat("after removing uncomplete samples (dim(mSetSqFlt)):", dim(mSetSqFlt[[i]]), "\n")
     
     #. Probes with SNPs at CpG Site ----
     # (common SNPs may affect the CpG)
-    mSetSqFlt[[i]] <- dropLociWithSnps(mSetSqFlt[[i]])
+    mSetSqFlt[[gse]] <- dropLociWithSnps(mSetSqFlt[[i]])
     cat("after removing common SNPs (dim(mSetSqFlt)):", dim(mSetSqFlt[[i]]), "\n\n")
     }
 
@@ -198,15 +217,15 @@ for (i in seq_along(detP)) {
 # after removing common SNPs (dim(mSetSqFlt)): 467244 14 
 # 
 # GSE114763 
-# probes to be kept (table(keep)): 6504 859355 
-# after removing uncomplete samples (dim(mSetSqFlt)): 859355 16 
-# after removing common SNPs (dim(mSetSqFlt)): 829814 16 
+# probes to be kept (table(keep)): 5542 860317 
+# after removing uncomplete samples (dim(mSetSqFlt)): 860317 15 
+# after removing common SNPs (dim(mSetSqFlt)): 830728 15  
 
 
 
 #### Cross Reactive Probes ####
-source("004_removing_cross_reactive_probes_450k.R")
-source("004_removing_cross_reactive_probes_EPIC.R")
+source("004_removing_cross_reactive_probes_450k.R"); dim(mSetSqFlt[["GSE60655"]])  # 467244     14
+source("004_removing_cross_reactive_probes_EPIC.R"); dim(mSetSqFlt[["GSE114763"]])  # 830728     15
 
 
 
@@ -216,7 +235,7 @@ source("004_removing_cross_reactive_probes_EPIC.R")
 for (i in seq_along(mSetSqFlt)) {
     cat(gseid[i], "\n")
     
-    png(paste0("plot/mds_afterqc_", gseid[i], ".png"))
+    png(paste0("plot0826/mds_afterqc_", gseid[i], ".png"))
     par(mfrow = c(1,1))
     plotMDS(getM(mSetSqFlt[[i]]), top = 1000, gene.selection = "common", 
             col = pal[factor(pD[[i]]$timepoint)], main = paste0(gseid[i], " After Filtering"))
@@ -224,7 +243,7 @@ for (i in seq_along(mSetSqFlt)) {
            cex = 0.8, fill = pal, bg = "white",  bty = "n")
     dev.off()
     
-    png(paste0("plot/mds_bf.af_qcfiltering", gseid[i], ".png"), width = 800)
+    png(paste0("plot0826/mds_bf.af_qcfiltering", gseid[i], ".png"), width = 800)
     par(mfrow = c(1,2))
     # Before
     plotMDS(getM(mSetSq[[i]]), top = 1000, gene.selection = "common", main = paste0(gseid[i], " Before"), 
@@ -236,3 +255,4 @@ for (i in seq_along(mSetSqFlt)) {
             col = pal[factor(pD[[i]]$timepoint)])
     dev.off()
 }
+

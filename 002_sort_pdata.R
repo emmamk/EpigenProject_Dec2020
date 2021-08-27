@@ -8,12 +8,13 @@
 #### GSE60655 ####
 # pD.all
 # library(minfi)
-pD.GSE60655 <- as(pD.all[["GSE60655"]][, c("title", "gender:ch1", "source_name_ch1", "subject:ch1", "geo_accession")], "DataFrame")
+pD.GSE60655 <- as(pD.all[["GSE60655"]][, c("title", "gender:ch1", "source_name_ch1","subject:ch1", "geo_accession")], "DataFrame")
 # (as( ,"DataFrame"))が無いと後の pData(rgSet) <- pD がerror.
 # pData(rgSet)はDataFrameである必要がある、とdeveloperが修正している:
 # https://github.com/genomicsclass/labs/pull/90
 # 参考: https://github.com/hansenlab/minfi/issues/174
-head(pD.GSE60655)
+# head(pD.GSE60655, 3)
+pD.GSE60655[1:3, 1:3]
 
 # name: don't start with numbers nor contain "-"
 names(pD.GSE60655)[c(1,2,3,4)] <- c("rep", "gender", "timepoint", "sample")
@@ -49,8 +50,15 @@ tail(pD.GSE60655, 3)
 
 
 #### GSE114763 ####
-pD.GSE114763 <- as(pD.all[["GSE114763"]][, c("title", "title", "geo_accession")], "DataFrame")
-head(pD.GSE114763, 3)
+pD.GSE114763 <- as(pD.all[["GSE114763"]][, c("title", "title", "geo_accession")], "DataFrame"); head(pD.GSE114763, 3)
+# DataFrame with 3 rows and 3 columns
+#                             title                title.1 geo_accession
+#                       <character>            <character>   <character>
+# GSM3149860 SkM_Epi_Mem_1: Muscl.. SkM_Epi_Mem_1: Muscl..    GSM3149860
+# GSM3149861 SkM_Epi_Mem_2: Muscl.. SkM_Epi_Mem_2: Muscl..    GSM3149861
+# GSM3149862 SkM_Epi_Mem_3: Muscl.. SkM_Epi_Mem_3: Muscl..    GSM3149862
+
+
 
 # name: don't start with numbers nor contain "-"
 names(pD.GSE114763)[c(1,2)] <- c("rep", "timepoint_org")
@@ -61,10 +69,10 @@ pD.GSE114763$rep <- str_extract(pD.GSE114763$rep, pattern="rep.")
 
 # selecting baseline and unloading for timepoint ----
 pD.GSE114763 <- pD.GSE114763 %>% 
-    subset(timepoint_org %in% c("baseline", "unloading"))
+    subset(timepoint_org %in% c("baseline", "loading"))
 with(pD.GSE114763, table(sample, timepoint_org))
 # timepoint
-# sample baseline unloading
+# sample baseline loading
 # S1        2         1      # S1 duplicated
 # S2        1         1
 # S3        1         1
@@ -91,27 +99,26 @@ table(pD.GSE114763$timepoint)
 #     8      9
 
 head(pD.GSE114763, 3)
-# DataFrame with 3 rows and 5 columns
-#                   rep   timepoint geo_accession      sample           ID
-#            <character> <character>   <character> <character>  <character>
+# DataFrame with 3 rows and 6 columns
+#                    rep timepoint_org geo_accession      sample   timepoint          ID
+#            <character>   <character>   <character> <character> <character> <character>
 # GSM3149860        rep1      baseline    GSM3149860          S1      before   S1.before
-# GSM3149863        rep1     unloading    GSM3149863          S1       after    S1.after
+# GSM3149862        rep1       loading    GSM3149862          S1       after    S1.after
 # GSM3149865        rep1      baseline    GSM3149865          S2      before   S2.before
 
 tail(pD.GSE114763, 3)
-# DataFrame with 3 rows and 5 columns
-#                    rep   timepoint geo_accession      sample           ID
-#            <character> <character>   <character> <character>  <character>
+# DataFrame with 3 rows and 6 columns
+#                    rep timepoint_org geo_accession      sample   timepoint          ID
+#            <character>   <character>   <character> <character> <character> <character>
 # GSM3149895        rep1      baseline    GSM3149895          S8      before   S8.before
-# GSM3149898        rep1     unloading    GSM3149898          S8       after    S8.after
+# GSM3149897        rep1       loading    GSM3149897          S8       after    S8.after
 # GSM3149899        rep2      baseline    GSM3149899          S1      before   S1.before
 
 
 
 #### Creating a list of pData ####
 pD <- list(pD.GSE60655, pD.GSE114763)
-names(pD) <- c("GSE60655", "GSE114763")
-pD
+names(pD) <- c("GSE60655", "GSE114763"); pD
 
 # $GSE60655
 # DataFrame with 16 rows and 6 columns
@@ -130,19 +137,19 @@ pD
 # GSM1484252        rep2        male       after         S13    GSM1484252   S13.after
 # 
 # $GSE114763
-# DataFrame with 17 rows and 5 columns
-#                    rep   timepoint geo_accession      sample           ID
-#            <character> <character>   <character> <character>  <character>
+# DataFrame with 17 rows and 6 columns
+#                    rep timepoint_org geo_accession      sample   timepoint          ID
+#            <character>   <character>   <character> <character> <character> <character>
 # GSM3149860        rep1      baseline    GSM3149860          S1      before   S1.before
-# GSM3149863        rep1     unloading    GSM3149863          S1       after    S1.after
+# GSM3149862        rep1       loading    GSM3149862          S1       after    S1.after
 # GSM3149865        rep1      baseline    GSM3149865          S2      before   S2.before
-# GSM3149868        rep1     unloading    GSM3149868          S2       after    S2.after
+# GSM3149867        rep1       loading    GSM3149867          S2       after    S2.after
 # GSM3149870        rep1      baseline    GSM3149870          S3      before   S3.before
 # ...                ...           ...           ...         ...         ...         ...
 # GSM3149890        rep1      baseline    GSM3149890          S7      before   S7.before
-# GSM3149893        rep1     unloading    GSM3149893          S7       after    S7.after
+# GSM3149892        rep1       loading    GSM3149892          S7       after    S7.after
 # GSM3149895        rep1      baseline    GSM3149895          S8      before   S8.before
-# GSM3149898        rep1     unloading    GSM3149898          S8       after    S8.after
+# GSM3149897        rep1       loading    GSM3149897          S8       after    S8.after
 # GSM3149899        rep2      baseline    GSM3149899          S1      before   S1.before
 
 names(pD)  # "GSE60655"  "GSE114763"
@@ -151,9 +158,10 @@ names(pD)  # "GSE60655"  "GSE114763"
 
 #### removing duplicated replication ####
 for (i in seq_along(pD)) {
+    cat("####", names(pD)[i], "####", "\n")
     pdata <- pD[[i]]
     rgset <- rgSet[[i]]
-    cat(names(pD)[i], "\n")
+    
     keep <- grep("rep1", pdata$rep)
     pdata <- pdata[keep,]
     rgset <- rgset[,keep]
@@ -169,21 +177,22 @@ for (i in seq_along(pD)) {
     rgSet[[i]] <- rgset
     
     cat("pData:", "\n")
-    print(pD[[i]])
-    cat("\n\n")
+    print(pD[i])
+    cat("\n")
     
     cat("rgSet:", "\n")
-    print(rgSet[[i]])
-    cat("\n\n")
+    print(rgSet[i])
+    cat("\n")
 }
 
 # memo:
-# GSE60655 
+#### GSE60655 #### 
 # table(pdata$rep): 14 
 # dim(pD): 14 6 
 # dim(rgSet): 622399 14 
 # 
 # pData: 
+# $GSE60655
 # DataFrame with 14 rows and 6 columns
 #                    rep      gender   timepoint      sample geo_accession          ID
 #            <character> <character> <character> <character>   <character> <character>
@@ -199,7 +208,9 @@ for (i in seq_along(pD)) {
 # S7.before         rep1        male      before          S7    GSM1484245   S7.before
 # S7.after          rep1        male       after          S7    GSM1484246    S7.after
 # 
+# 
 # rgSet: 
+# $GSE60655_End
 # class: RGChannelSet 
 # dim: 622399 14 
 # metadata(0):
@@ -213,37 +224,41 @@ for (i in seq_along(pD)) {
 # annotation: ilmn12.hg19
 # 
 # 
-# GSE114763 
+# #### GSE114763 #### 
 # table(pdata$rep): 16 
-# dim(pD): 16 5 
-# dim(rgSet): 1051943 16
+# dim(pD): 16 6 
+# dim(rgSet): 1051943 16 
 # 
 # pData: 
+# $GSE114763
 # DataFrame with 16 rows and 6 columns
 #                   rep timepoint_org geo_accession      sample   timepoint          ID
-#           <character>   <character>   <character> <character> <character> <character>
+#            <character>   <character>   <character> <character> <character> <character>
 # S1.before        rep1      baseline    GSM3149860          S1      before   S1.before
-# S1.after         rep1     unloading    GSM3149863          S1       after    S1.after
+# S1.after         rep1       loading    GSM3149862          S1       after    S1.after
 # S2.before        rep1      baseline    GSM3149865          S2      before   S2.before
-# S2.after         rep1     unloading    GSM3149868          S2       after    S2.after
+# S2.after         rep1       loading    GSM3149867          S2       after    S2.after
 # S3.before        rep1      baseline    GSM3149870          S3      before   S3.before
 # ...               ...           ...           ...         ...         ...         ...
-# S6.after         rep1     unloading    GSM3149888          S6       after    S6.after
+# S6.after         rep1       loading    GSM3149887          S6       after    S6.after
 # S7.before        rep1      baseline    GSM3149890          S7      before   S7.before
-# S7.after         rep1     unloading    GSM3149893          S7       after    S7.after
+# S7.after         rep1       loading    GSM3149892          S7       after    S7.after
 # S8.before        rep1      baseline    GSM3149895          S8      before   S8.before
-# S8.after         rep1     unloading    GSM3149898          S8       after    S8.after
+# S8.after         rep1       loading    GSM3149897          S8       after    S8.after
 # 
-# rgSet:
-# lass: RGChannelSet 
+# 
+# rgSet: 
+# $GSE114763_Res
+# class: RGChannelSet 
 # dim: 1051943 16 
 # metadata(0):
 # assays(2): Green Red
 # rownames(1051943): 1600101 1600111 ... 99810990 99810992
 # rowData names(0):
 # colnames(16): S1.before S1.after ... S8.before S8.after
-# colData names(5): rep timepoint_org ... timepoint ID
+# colData names(6): rep timepoint_org ... timepoint ID
 # Annotation
 # array: IlluminaHumanMethylationEPIC
 # annotation: ilm10b4.hg19
+
 
