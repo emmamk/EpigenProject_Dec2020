@@ -17,7 +17,9 @@ plot
 plot0826
 test*
 archive*
-preliminary
+preliminary.dec2020
 DMA_masterScripts
 ~$*
-
+hiro.results
+*.gmt
+*.csv
