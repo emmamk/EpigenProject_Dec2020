@@ -7,7 +7,6 @@ setwd('/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/GSE60655_End')
 suppressMessages(
     suppressWarnings({
         library(GEOquery)
-        
         library(IlluminaHumanMethylation450kanno.ilmn12.hg19)
         library(IlluminaHumanMethylation450kmanifest)
         library(lumi)  # MethyLumi
@@ -340,6 +339,9 @@ summary(decideTests(fit2, adjust.method = "none", p.value = 0.05)) # p-value
 
 #### Get the Table of Results ####
 ann450k <- getAnnotation(IlluminaHumanMethylation450kanno.ilmn12.hg19)
+length(unlist(strsplit(ann450k$UCSC_RefGene_Name,split=";")))
+length(unique(unlist(strsplit(ann450k$UCSC_RefGene_Name,split=";"))))
+length(rownames(ann450k))
 ann450kSub <- ann450k[match(rownames(combat.edata), ann450k$Name), c(1:4,12:19,24:ncol(ann450k))]
 # head(ann450kSub)
 
