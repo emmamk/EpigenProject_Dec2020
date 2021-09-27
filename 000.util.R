@@ -26,6 +26,7 @@ suppressMessages(
         library(IlluminaHumanMethylationEPICanno.ilm10b2.hg19)
         library(IlluminaHumanMethylationEPICmanifest)
         library(DOSE)
+        library(ggplot2)
     })
 )
 

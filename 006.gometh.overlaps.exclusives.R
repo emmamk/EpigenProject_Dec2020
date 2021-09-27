@@ -1,5 +1,3 @@
-
-
 #### Gene Ontology mlseting (gometh) ####
 # setwd("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/")
 # source("000.util.R")
@@ -15,6 +13,7 @@
 cpgs <- list()
 cpg.names <- list()
 overlap <- list()
+exclusive <- list()
 data.type <- c("all", "sig", "sig.pos", "sig.neg")
 for (i in seq_along(gseid)) {
     cat("#####", gsedir[[i]], "####", "\n")
@@ -45,7 +44,19 @@ for (i in seq_along(gseid)) {
         cat("length:", type, length(overlap[[type]]) , "\n") # 1549
     }
     
-    cat("\n\n")
+    cat("\n")
+    
+    #. exclusive genes ----
+    cat("#### Exclusive genes ####", "\n")
+    for (type in names(cpg.names[[gse]])) {
+        cat("####", type, "####", "\n")
+        ex.60655 <- paste0(type, ".GSE60655")
+        ex.114763 <- paste0(type, ".GSE114763")
+        exclusive[[ex.60655]] <- setdiff(cpg.names[["GSE60655"]][[type]], cpg.names[["GSE114763"]][[type]])
+        exclusive[[ex.114763]] <- setdiff(cpg.names[["GSE114763"]][[type]], cpg.names[["GSE60655"]][[type]])
+        cat("length (GSE60655):", length(exclusive[[ex.60655]]) , "\n")
+        cat("length (GSE114763):", length(exclusive[[ex.114763]]) , "\n\n")
+    }
 }
 
 
@@ -53,31 +64,34 @@ for (i in seq_along(gseid)) {
 #### Enrichment with GOmeth ####
 gometh <- list()
 go.results <- list()
-for (i in 3:4) {
-    type <- str_extract(names(overlap[i]), "pos|neg")
+gometh.interested <- c(overlap[3:4], exclusive[6], exclusive[8])
+names(gometh.interested)  # "sig.pos.Name"  "sig.neg.Name"  "sig.pos.Name.GSE114763"  "sig.neg.Name.GSE114763"
+names(gometh.interested) <- c("overlap.sig.pos", "overlap.sig.neg", "exclusive.sig.pos.GSE114763", "exclusive.sig.neg.GSE114763")
+for (i in seq_along(gometh.interested)) {
+    name <- names(gometh.interested)[i]
+    cat("#### gometh():", name, "####", "\n")
     
-    cat("#### Gometh:", type, "####", "\n")
-    sig.cpg <- overlap[[i]]
+    sig.cpg <- gometh.interested[[i]]
     gst <- gometh(sig.cpg = sig.cpg, all.cpg = overlap[["all.Name"]], plot.bias = F)
-    gometh[[type]] <- gst
+    gometh[[name]] <- gst
     
     
     #. categories ----
     cat("extracting GO terms...", "\n")
     topgsa <- topGSA(gst, num=Inf)
     topgsa <- topgsa[topgsa$P.DE < 0.05,]
-    cat("P.DE < 0.05:", length(topgsa$TERM), "\n")  # 584
-    go.results[[type]] <- topgsa
+    cat("P.DE < 0.05:", length(topgsa$TERM), "\n")
+    go.results[[name]] <- topgsa
     
     
     #### Search the terms of interest ####
     #. positive logFC ----
-    print(topgsa$TERM[grep("blood pressure|cardio vascular|inflamation", topgsa$TERM)])  # 0
-    cat("position: ", grep("blood pressure|cardio vascular|inflamation", topgsa$TERM), "\n\n")  # 0
+    print(topgsa$TERM[grep("blood pressure|cardio vascular|inflamation", topgsa$TERM)])
+    cat("position: ", grep("blood pressure|cardio vascular|inflamation", topgsa$TERM), "\n\n")
     
-    # date <- format(Sys.time(), "%m.%d.%Y")
-    # setwd(project.dir)
-    # write.csv(topgsa, paste0("overlap.cpgs.", type, date, ".csv"))
+    date <- format(Sys.time(), "%m.%d.%Y")
+    setwd(project.dir)
+    write.csv(topgsa, paste0(name, ".", date, ".csv"))
     
 }
 
@@ -85,7 +99,7 @@ for (i in 3:4) {
 
 #### Visualization ####
 for (i in seq_along(go.results)) {
-    cat("#### GOmeth", names(go.results[i]), "####", "\n")
+    cat("#### gometh results:", names(go.results[i]), "####", "\n")
     plot.df <- go.results[[i]] %>% 
         mutate(nlog10P = -log10(P.DE)) %>% 
         group_by(ONTOLOGY) %>% 
@@ -116,3 +130,4 @@ for (i in seq_along(go.results)) {
 
 
 cat("\n\n")
+
