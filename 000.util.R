@@ -1,10 +1,15 @@
 #### Util variables ####
 setwd("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/")
+project.dir <- "/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/" # getwd()
+date <- format(Sys.time(), "%m.%d.%Y")
 gseid <- c("GSE60655", "GSE114763")
 gsedir <- c("GSE60655_End", "GSE114763_Res")
-project.dir <- "/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/"
 gsedir.path <- c(paste0(project.dir, "GSE60655_End"), paste0(project.dir, "GSE114763_Res"))
 
+if (!dir.exists(paste0(project.dir, "plot"))) {
+    dir.create("plot")
+}
+plot.dir <- paste0(project.dir, "plot/")
 
 
 #### Libraries ####

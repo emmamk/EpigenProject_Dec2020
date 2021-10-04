@@ -64,9 +64,16 @@ for (i in seq_along(gseid)) {
 #### Enrichment with GOmeth ####
 gometh <- list()
 go.results <- list()
-gometh.interested <- c(overlap[3:4], exclusive[6], exclusive[8])
-names(gometh.interested)  # "sig.pos.Name"  "sig.neg.Name"  "sig.pos.Name.GSE114763"  "sig.neg.Name.GSE114763"
-names(gometh.interested) <- c("overlap.sig.pos", "overlap.sig.neg", "exclusive.sig.pos.GSE114763", "exclusive.sig.neg.GSE114763")
+gometh.interested <- c(cpg.names[["GSE60655"]][2], cpg.names[["GSE114763"]][2], 
+                       overlap[2:4], exclusive[3:4], exclusive[6], exclusive[8])
+names(gometh.interested)
+# [1] "sig.Name"               "sig.Name"               "sig.Name"               "sig.pos.Name"           "sig.neg.Name"          
+# [6] "sig.Name.GSE60655"      "sig.Name.GSE114763"     "sig.pos.Name.GSE114763" "sig.neg.Name.GSE114763"
+
+names(gometh.interested) <- c("GSE60655sig", "GSE114763sig", 
+                              "overlap.sig", "overlap.sig.pos", "overlap.sig.neg",
+                              "exclusive.sig.GSE60655", "exclusive.sig.GSE114763",
+                              "exclusive.sig.pos.GSE114763", "exclusive.sig.neg.GSE114763")
 for (i in seq_along(gometh.interested)) {
     name <- names(gometh.interested)[i]
     cat("#### gometh():", name, "####", "\n")
@@ -89,9 +96,9 @@ for (i in seq_along(gometh.interested)) {
     print(topgsa$TERM[grep("blood pressure|cardio vascular|inflamation", topgsa$TERM)])
     cat("position: ", grep("blood pressure|cardio vascular|inflamation", topgsa$TERM), "\n\n")
     
-    date <- format(Sys.time(), "%m.%d.%Y")
+    # date <- format(Sys.time(), "%m.%d.%Y")
     setwd(project.dir)
-    write.csv(topgsa, paste0(name, ".", date, ".csv"))
+    write.csv(topgsa, paste0("go.", name, ".", date, ".csv"))
     
 }
 
