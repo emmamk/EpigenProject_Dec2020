@@ -60,7 +60,7 @@ for (i in seq_along(kegg.results)) {
             plot.df$Description <- factor(plot.df$Description, levels=rev(unique(plot.df$Description[idx])))
             
             png(paste0(plot.dir, "kegg.dotplot.", res.name, ".", j, ".", date, ".png"),
-                width = 1280, height = 1000)
+                width = 1000, height = 1000)
             print(
             ggplot(plot.df, 
                    aes_string(plot.df$DE, y = plot.df$Description, size=plot.df$DE, color=plot.df$P.DE)) +
@@ -70,8 +70,17 @@ for (i in seq_along(kegg.results)) {
                 # facet_grid(ONTOLOGY ~ ., scales = "free", space = "free")+
                 # scale_y_discrete(labels = test$TERM)+
                 ylab(NULL) + xlab("Count") + ggtitle(paste0("KEGG ", res.name, " ", j)) +
-                theme_dose(font.size = 16) +
-                scale_size(range=c(3, 8))
+                theme_dose(font.size = 20) +
+                scale_size(range=c(4, 8)) +
+                theme(panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(),
+                      panel.background = element_blank(),
+                      legend.key.size = unit(1, 'cm'),
+                      legend.key.height = unit(1, 'cm'),
+                      legend.key.width = unit(1, 'cm'),
+                      legend.title = element_text(size=16),
+                      legend.text = element_text(size=16)
+                )
             )
             dev.off()
         }
@@ -80,7 +89,7 @@ for (i in seq_along(kegg.results)) {
         idx <- order(plot.df$DE, decreasing = TRUE)
         plot.df$Description <- factor(plot.df$Description, levels=rev(unique(plot.df$Description[idx])))
         
-        png(paste0(plot.dir, "kegg.dotplot.", res.name, ".", date, ".png"), width = 1280, height = 1000)
+        png(paste0(plot.dir, "kegg.dotplot.", res.name, ".", date, ".png"), width = 1000, height = 1000)
         print(
             ggplot(plot.df, 
                    aes_string(plot.df$DE, y = plot.df$Description, size=plot.df$DE, color=plot.df$P.DE)) +
@@ -90,13 +99,21 @@ for (i in seq_along(kegg.results)) {
                 # facet_grid(ONTOLOGY ~ ., scales = "free", space = "free")+
                 # scale_y_discrete(labels = test$TERM)+
                 ylab(NULL) + xlab("Count") + ggtitle(paste0("KEGG ", res.name)) +
-                theme_dose(font.size = 16) +
-                scale_size(range=c(3, 8))
+                theme_dose(font.size = 20) +
+                scale_size(range=c(4, 8)) +
+                theme(panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(),
+                      panel.background = element_blank(),
+                      legend.key.size = unit(1, 'cm'),
+                      legend.key.height = unit(1, 'cm'),
+                      legend.key.width = unit(1, 'cm'),
+                      legend.title = element_text(size=16),
+                      legend.text = element_text(size=16)
+                )
         )
         dev.off()
     }
 
-        
     #. barplot ----
     # plot.df <- kegg.results[[i]] %>%
     #     mutate(nlog10P = -log10(P.DE)) %>%
@@ -126,3 +143,4 @@ for (i in seq_along(kegg.results)) {
 }
 
 cat("\n\n")
+
