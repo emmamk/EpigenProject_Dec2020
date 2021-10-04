@@ -24,3 +24,4 @@ hiro.results
 *.gmt
 *.csv
 ~/Documents/Bioinformatics/EpigenProject_Dec2020/*.R
+results
