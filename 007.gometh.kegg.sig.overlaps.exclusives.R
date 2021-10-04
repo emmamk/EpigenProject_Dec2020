@@ -65,7 +65,7 @@ for (i in seq_along(kegg.results)) {
             ggplot(plot.df, 
                    aes_string(plot.df$DE, y = plot.df$Description, size=plot.df$DE, color=plot.df$P.DE)) +
                 geom_point() +
-                scale_color_continuous(low="red", high="blue", name = "p-value",
+                scale_color_continuous(low="#696969", high="#dcdcdc", name = "p-value",  # low: dimgray #696969, high: gainsboro #dcdcdc
                                        guide=guide_colorbar(reverse=TRUE)) +
                 # facet_grid(ONTOLOGY ~ ., scales = "free", space = "free")+
                 # scale_y_discrete(labels = test$TERM)+
@@ -85,7 +85,7 @@ for (i in seq_along(kegg.results)) {
             ggplot(plot.df, 
                    aes_string(plot.df$DE, y = plot.df$Description, size=plot.df$DE, color=plot.df$P.DE)) +
                 geom_point() +
-                scale_color_continuous(low="red", high="blue", name = "p-value",
+                scale_color_continuous(low="#696969", high="#dcdcdc", name = "p-value",  # low: dimgray #696969, high: gainsboro #dcdcdc
                                        guide=guide_colorbar(reverse=TRUE)) +
                 # facet_grid(ONTOLOGY ~ ., scales = "free", space = "free")+
                 # scale_y_discrete(labels = test$TERM)+
