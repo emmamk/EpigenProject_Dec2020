@@ -25,3 +25,4 @@ hiro.results
 *.csv
 ~/Documents/Bioinformatics/EpigenProject_Dec2020/*.R
 results
+007.tailored.dotplot.R
