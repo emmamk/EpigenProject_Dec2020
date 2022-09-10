@@ -1,9 +1,5 @@
-## DNA Methylation Analysis on Publicly Available Data
+# DNA Methylation Analysis on Publicly Available Data  
 
-**Objective: To explore the chronic exercise effects on human health**<br>
-**—exploring the effects of endurance(aerobic) and resistant exercise—**<br><br>
-
-- Started: 12/2020
-- Preparing for publication (09/2021)
-- Status: under review
-  (repository might be relocated)
+This repository have scripts for DNA methylation analysis used for the following publication:  
+**Publication title - Sports activities at a young age decrease hypertension risk – the J-Fit+ study**  
+[https://doi.org/10.14814/phy2.15364](https://doi.org/10.14814/phy2.15364)
