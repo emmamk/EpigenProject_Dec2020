@@ -2,11 +2,10 @@
 # ref1: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3669124/
 # ref2.: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4622000/
 
-# setwd('/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/')
+# project.dir <- "/Users/Emma/GitHub/EpigenProject_Dec2020/"
+# setwd(project.dir)
 # source("000.util.R")
 # source("001.data.prep.R")
-
-
 
 
 for (i in seq_along(gseid)) {
@@ -60,8 +59,10 @@ for (i in seq_along(gseid)) {
     bVals.pre <- mlset[[i]]@assayData$betas
     
     par(mfrow=c(1,2))
-    outlier.mvals <- detectOutlier(mVals.pre, ifPlot = TRUE)  # none
-    outlier.bvals <- detectOutlier(bVals.pre, ifPlot = TRUE)  # none
+    outlier.mvals <- detectOutlier(mVals.pre, ifPlot = TRUE)
+    outlier.bvals <- detectOutlier(bVals.pre, ifPlot = TRUE)
+    print(outlier.mvals)
+    print(outlier.bvals)
     cat("check the destances between samples in the plot.", "\n\n")
     # S1.baseline in GSE114763 is detected as an outlier
     

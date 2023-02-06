@@ -1,5 +1,6 @@
 #### Gene Ontology mlseting (gometh) ####
-# setwd("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/")
+# project.dir <- "/Users/Emma/GitHub/EpigenProject_Dec2020/"
+# setwd(project.dir)
 # source("000.util.R")
 # source("001.data.prep.R")
 # source("002.pdata.sort.R")
@@ -25,23 +26,21 @@ for (i in seq_along(gseid)) {
     #. loading GSE60655 data (endurance) ----
     cat("nrow(cpgs.all)", nrow(dmps), "\n")
     cat("nrow(cpgs.sig)", nrow(dmps.005), "\n")
-    cpgs.sig.pos <- subset(dmps.005, logFC > 0); cat("nrow(cpgs.sig.pos)",nrow(cpgs.sig.pos), "\n")  # 20173
-    cpgs.sig.neg <- subset(dmps.005, logFC < 0); cat("nrow(cpgs.sig.neg)", nrow(cpgs.sig.neg), "\n\n")  # 26794
+    cpgs.sig.pos <- subset(dmps.005, logFC > 0); cat("nrow(cpgs.sig.pos)",nrow(cpgs.sig.pos), "\n")
+    cpgs.sig.neg <- subset(dmps.005, logFC < 0); cat("nrow(cpgs.sig.neg)", nrow(cpgs.sig.neg), "\n\n")
     cpgs[[gse]] <- list(dmps, dmps.005, cpgs.sig.pos, cpgs.sig.neg)
     names(cpgs[[gse]]) <- data.type
     
     #. extracting cpg names ----
     cpg.names[[gse]] <- sapply(cpgs[[gse]], "[", "Name")
     
-    
     if (i != length(gsedir)) { next }
-    
     
     #. taking overlaps ----
     cat("#### Overlaps ####", "\n")
     for (type in names(cpg.names[[gse]])) {
         overlap[[type]] <- intersect(cpg.names[["GSE60655"]][[type]], cpg.names[["GSE114763"]][[type]])
-        cat("length:", type, length(overlap[[type]]) , "\n") # 1549
+        cat("length:", type, length(overlap[[type]]) , "\n")
     }
     
     cat("\n")
@@ -58,6 +57,40 @@ for (i in seq_along(gseid)) {
         cat("length (GSE114763):", length(exclusive[[ex.114763]]) , "\n\n")
     }
 }
+# ##### GSE60655_End #### 
+# nrow(cpgs.all) 484534 
+# nrow(cpgs.sig) 47752 
+# nrow(cpgs.sig.pos) 27163 
+# nrow(cpgs.sig.neg) 20589 
+# 
+# ##### GSE114763_Res #### 
+# nrow(cpgs.all) 451120 
+# nrow(cpgs.sig) 27816 
+# nrow(cpgs.sig.pos) 11145 
+# nrow(cpgs.sig.neg) 16671 
+# 
+# #### Overlaps #### 
+# length: all.Name 450535 
+# length: sig.Name 3817 
+# length: sig.pos.Name 1519 
+# length: sig.neg.Name 1584 
+# 
+# #### Exclusive genes #### 
+# #### all.Name #### 
+# length (GSE60655): 33999 
+# length (GSE114763): 585 
+# 
+# #### sig.Name #### 
+# length (GSE60655): 43935 
+# length (GSE114763): 23999 
+# 
+# #### sig.pos.Name #### 
+# length (GSE60655): 25644 
+# length (GSE114763): 9626 
+# 
+# #### sig.neg.Name #### 
+# length (GSE60655): 19005 
+# length (GSE114763): 15087 
 
 
 

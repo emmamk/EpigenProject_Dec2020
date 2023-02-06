@@ -1,5 +1,6 @@
 #### scripts for the project ####
-setwd("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/")
+project.dir <- "/Users/Emma/GitHub/EpigenProject_Dec2020/"
+setwd(project.dir)
 source("000.util.R")
 source("001.data.prep.R")
 source("002.pdata.sort.R")

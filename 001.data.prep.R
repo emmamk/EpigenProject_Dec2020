@@ -1,5 +1,6 @@
 #### Preparing the data: GSE60655 & GSE114763 ####
-setwd("/Users/Emma/Documents/Bioinformatics/EpigenProject_Dec2020/")
+project.dir <- "/Users/Emma/GitHub/EpigenProject_Dec2020/"
+setwd(project.dir)
 # source("000.util.R")
 
 
@@ -16,7 +17,8 @@ for (i in seq_along(gseid)) {
         idatFiles[[gse]] <- list.files("idat", pattern = "idat$")
         cat("number of idat files:", length(idatFiles[[i]]), "\n\n") 
     } else {
-        cat("downloading idat files....", "\n")
+        cat("downloading idat files...", "\n")
+        options(timeout = max(300, getOption("timeout")))
         getGEOSuppFiles(gse, makeDirectory = F)
         untar(paste0(gse, "_RAW.tar"), exdir = "idat")
         
